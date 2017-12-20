@@ -9,7 +9,7 @@ import cgi
 form = """
 <form method = "post">
     <p><b> Enter some text to ROT13: </b></p>
-    <textarea name = "text" value = "%(words)s"></textarea>
+    <textarea name = "text">%(words)s</textarea>
     <br>
     <input type = "submit">
 </form>
