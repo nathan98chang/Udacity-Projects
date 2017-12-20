@@ -36,7 +36,7 @@ def rot13hash(s):
 
 class MainPage(webapp2.RequestHandler):
     def write_form(self, text_ = ""):
-        self.response.out.write(form % text_)
+        self.response.out.write(form % (text_))
 
     def get(self):
         self.write_form()
