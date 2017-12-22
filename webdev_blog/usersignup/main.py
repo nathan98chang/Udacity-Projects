@@ -26,25 +26,25 @@ form = """
         <tr>
         <td><label>Username</label></td>
         <td><input type = "text" name = "username">%(username)s</td>
-        <td>%(usererror)s</td>
+        <td><div style = "color: red">%(usererror)s</div></td>
         </tr>
         
         <tr>
         <td><label>Password</label></td>
         <td><input type = "password" name = "password">%(password)s</td>
-        <td>%(passerror)s</td>
+        <td><div style = "color: red">%(passerror)s</div></td>
         </tr>
         
         <tr>
         <td><label>Verify Password</label></td>
         <td><input type = "password" name = "verify">%(verify)s</td>
-        <td>%(verifyerror)s</td>
+        <td><div style = "color: red">%(verifyerror)s</div></td>
         </tr>
         
         <tr>
         <td><label>Email (optional)</label></td>
         <td><input type = "text" name = "email">%(email)s</td>
-        <td>%(emailerror)s</td>
+        <td><div style = "color: red">%(emailerror)s</div></td>
         </tr>
       </tbody>
     </table>
@@ -83,19 +83,25 @@ class MainPage(webapp2.RequestHandler):
             # redirect to success page
             self.redirect("/success")
         else:
+            error1 = ""
+            error2 = ""
+            error3 = ""
+            error4 = ""
             if not valid_username(user_name):
-                pass
+                error1 = "That's not a valid username."
             if not valid_password(user_pass):
-                pass
+                error2 = "That wasn't a valid password."
             if not (user_pass == user_verify):
-                pass
+                error3 = "Your passwords didn't match."
             if not valid_email(user_email):
-                pass
+                error4 = "That's not a valid email."
+            self.write_form("", "", "", "", error1, error2, error3, error4)
+
 
 
 class SuccessHandler(webapp2.RequestHandler):
     def get(self, user = ""):
-        self.response.out.write(success % {"username": user})
+        self.response.out.write(success % {"username": self.request.get("username")})
 
 
 app = webapp2.WSGIApplication([('/', MainPage), ('/success', SuccessHandler)], debug=True)
