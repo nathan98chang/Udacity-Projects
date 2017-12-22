@@ -95,8 +95,8 @@ class MainPage(webapp2.RequestHandler):
                 error3 = "Your passwords didn't match."
             if not valid_email(user_email):
                 error4 = "That's not a valid email."
-            self.write_form("", "", "", "", error1, error2, error3, error4)
 
+            self.write_form("", "", "", "", error1, error2, error3, error4)
 
 
 class SuccessHandler(webapp2.RequestHandler):
