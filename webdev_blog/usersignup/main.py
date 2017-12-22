@@ -55,8 +55,15 @@ form = """
 
 #HTML code for success page
 success = """
-<h1><b>Welcome %(username)s!</b></h1>
+<form>
+<h1 name = "username"><b>Welcome %(username)s!</b></h1>
+</form>
 """
+
+
+#BAD PRACTICE: global username variable so that i can keep the values during redirects
+#I haven't learned templates yet
+globaluser = "default"
 
 class MainPage(webapp2.RequestHandler):
     def write_form(self, user = "", pw = "", ver = "", eml = "",
@@ -74,7 +81,7 @@ class MainPage(webapp2.RequestHandler):
         self.write_form()
 
     def post(self):
-        user_name = self.request.get("username")
+        user_name = self.request.get("username") 
         user_pass = self.request.get("password")
         user_verify = self.request.get("verify")
         user_email = self.request.get("email")
@@ -100,8 +107,12 @@ class MainPage(webapp2.RequestHandler):
 
 
 class SuccessHandler(webapp2.RequestHandler):
-    def get(self, user = ""):
-        self.response.out.write(success % {"username": self.request.get("username")})
+    def get(self):
+        self.response.out.write(success % {"username": globaluser})
 
 
 app = webapp2.WSGIApplication([('/', MainPage), ('/success', SuccessHandler)], debug=True)
+
+
+
+
