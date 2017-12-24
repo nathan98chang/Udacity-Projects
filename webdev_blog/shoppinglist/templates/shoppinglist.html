@@ -7,4 +7,16 @@
 		{% endfor %}
 	{% endif %}
 	<button>Add</button>
+
+	{% if items %}
+		<br>
+		<br>
+
+		<h2>Shopping List</h2>
+		<ul>
+			{% for item in items %}
+				<li>{{item}}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 </form>
