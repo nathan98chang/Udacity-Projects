@@ -20,8 +20,6 @@ class Handler(webapp2.RequestHandler):
         self.write(self.render_str(template, **kw))
 
 
-
-
 class MainPage(Handler):
 
 

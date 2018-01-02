@@ -1,14 +1,20 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html>
-	<head>
-		<title>living sideways</title>
-	</head>
+{% block content %}
+  <form method="post">
+		<h1>new post</h1>
 
-	<body>
+		<label>
+			subject
+      		<br>
+			<input name="subject">
+		</label>
+    	<br>
 
-		
-
-
-	</body>
-</html>
+		<label>
+			content
+      		<br>
+			<textarea name="content">{{content}}</textarea>
+		</label>
+	</form>
+{% endblock %}
