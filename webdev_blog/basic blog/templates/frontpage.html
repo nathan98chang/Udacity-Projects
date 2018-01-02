@@ -2,6 +2,11 @@
 
 {% block content %}
 
-
+	{% for entry in entries %}
+		<div class="post">
+			<div class="post-subject">{{entry.subject}}</div>
+			<div class="post-content">{{entry.content}}</div>
+		</div>
+	{% endfor %}
 
 {% endblock %}

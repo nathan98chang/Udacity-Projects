@@ -5,16 +5,18 @@
 		<h1>new post</h1>
 
 		<label>
-			subject
-      		<br>
-			<input name="subject">
+			<div>subject</div>
+			<input type="text" name="subject" value="{{subject}}">
 		</label>
     	<br>
 
 		<label>
-			content
-      		<br>
+			<div>content</div>
 			<textarea name="content">{{content}}</textarea>
 		</label>
+
+		<div class="error">{{error}}</div>
+
+		<input type="submit">
 	</form>
 {% endblock %}
