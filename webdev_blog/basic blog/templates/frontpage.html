@@ -4,8 +4,11 @@
 
 	{% for entry in entries %}
 		<div class="post">
-			<div class="post-subject">{{entry.subject}}</div>
+			<br>
+			<div class="post-subject"><b>{{entry.subject}}</b></div>
+			<hr>
 			<div class="post-content">{{entry.content}}</div>
+			<br>
 		</div>
 	{% endfor %}
 
