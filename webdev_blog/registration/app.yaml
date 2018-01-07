@@ -4,7 +4,7 @@ threadsafe: true
 
 handlers:
 - url: /.*
-  script: gaecookies.app
+  script: registration.app
 
 libraries:
 - name: jinja2
