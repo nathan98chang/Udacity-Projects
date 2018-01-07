@@ -1,7 +1,6 @@
 import os
 import webapp2
 import jinja2
-import hmac
 import re
 
 #used for HMAC "salting"
@@ -28,6 +27,7 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 
 #hash verification functions
 import hashlib
+import hmac
 
 def hash_str(s):
     return hmac.new(SECRET, s).hexdigest()
@@ -64,21 +64,33 @@ class MainPage(Handler):
             verifyerror=verifyerror, emailerror=emailerror)
 
     def post(self):
+        error1 = ""
         username = self.request.get("username")
+        
+        if not valid_username(username):
+            error1 = "That's not a valid username."
+
+        #verify whether cookie already exists
+        usercookie = self.request.cookies.get("username")
+        if usercookie:
+            userfromcookie = check_secure_val(usercookie)
+            if username == userfromcookie:
+                error1 = "This user already exists."
+
         password = self.request.get("password")
         verify = self.request.get("verify")
         email = self.request.get("email")
 
         if valid_username(username) and valid_password(password) and password == verify and valid_email(email):
+            newusercookie = make_secure_val(str(username))
+            self.response.headers.add_header('Set-Cookie', 'username=%s' % newusercookie)
+
             self.render("welcome.html", username=username)
         else:
-            error1 = ""
             error2 = ""
             error3 = ""
             error4 = ""
 
-            if not valid_username(username):
-                error1 = "That's not a valid username."
             if not valid_password(password):
                 error2 = "That wasn't a valid password."
             if not (password == verify):
@@ -86,12 +98,10 @@ class MainPage(Handler):
             if not valid_email(email):
                 error4 = "That's not a valid email."
 
-            self.render("signup.html", username=username, password="",
-                verify="", email=email, usererror=error1, passerror=error2,
-                verifyerror=error3, emailerror=error4)
+            self.get(username, "", "", email, error1, error2, error3, error4)
 
 
-app = webapp2.WSGIApplication([('/', MainPage)], debug=True)
+app = webapp2.WSGIApplication([('/signup', MainPage)], debug=True)
 
 
 
