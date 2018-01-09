@@ -83,8 +83,9 @@ class MainPage(Handler):
 
         if valid_username(username) and valid_password(password) and password == verify and valid_email(email):
             newusercookie = make_secure_val(str(username))
-            self.response.headers.add_header('Set-Cookie', 'username=%s' % newusercookie)
+            self.response.headers.add_header('Set-Cookie', 'user_id=%s; Path=/' % newusercookie)
 
+            #redirect to welcome page upon successful validation
             self.render("welcome.html", username=username)
         else:
             error2 = ""
@@ -100,8 +101,32 @@ class MainPage(Handler):
 
             self.get(username, "", "", email, error1, error2, error3, error4)
 
+class Login(Handler):
+    def get(self, username="", password=""):
+        self.render("login.html", username=username, password=password)
 
-app = webapp2.WSGIApplication([('/signup', MainPage)], debug=True)
+    def post(self):
+        error1 = ""
+        #verify whether cookie already exists
+        usercookie = self.request.cookies.get("username")
+        if usercookie:
+            username = check_secure_val(usercookie)
+            self.render("welcome.html", username=username)
+        else:
+            error1 = "Invalid Login"
+            self.render("login.html", username=username, loginerror=error1)
+
+class Logout(Handler):
+    def get(self):
+        usercookie = self.request.cookies.get("username")
+        if usercookie:
+            self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
+            self.render("signup.html")
+        else:
+            self.write("Logout Error: User does not already exist.")
+
+
+app = webapp2.WSGIApplication([('/signup', MainPage), ('/login', Login), ('/logout', Logout)], debug=True)
 
 
 
